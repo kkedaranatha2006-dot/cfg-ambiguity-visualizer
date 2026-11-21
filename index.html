@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CFG Parse Tree & Ambiguity Detector | BCS503</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <h1>CFG Parse Tree & Ambiguity Detector</h1>
+      <p class="subtitle">Theory of Computation (BCS503) — Module 3 Interactive Visualizer</p>
+    </div>
+    <span class="badge-course">Earley Parsing Engine</span>
+  </header>
+
+  <main class="container">
+    <!-- Left Sidebar: Controls -->
+    <section class="panel controls-panel">
+      <div class="form-group">
+        <label>1. Load Syllabus Presets</label>
+        <div class="preset-buttons">
+          <button type="button" class="btn-preset active" data-preset="ambiguous-expr">Ambiguous Arithmetic</button>
+          <button type="button" class="btn-preset" data-preset="unambiguous-expr">Unambiguous Arithmetic</button>
+          <button type="button" class="btn-preset" data-preset="dangling-else">Dangling Else</button>
+          <button type="button" class="btn-preset" data-preset="palindrome">Palindromes (a, b)</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="grammar-input">2. Context-Free Grammar Rules (<code>A -> B C | d</code>)</label>
+        <textarea id="grammar-input" rows="7" spellcheck="false"></textarea>
+        <small class="hint">First rule's LHS is the Start Symbol. Separate tokens with spaces. Use <code>ε</code> or <code>eps</code> for epsilon.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="string-input">3. Input String (space-separated tokens)</label>
+        <input type="text" id="string-input" placeholder="e.g., id + id * id" />
+      </div>
+
+      <div class="action-buttons">
+        <button type="button" id="parse-btn" class="btn-primary">Generate Parse Trees</button>
+        <button type="button" id="hunt-btn" class="btn-secondary">Auto-Hunt Ambiguity</button>
+      </div>
+
+      <div class="theory-box">
+        <h3>Viva Quick-Reference</h3>
+        <ul>
+          <li><strong>Formal Grammar:</strong> $G = (V, \Sigma, R, S)$</li>
+          <li><strong>Ambiguity Condition:</strong> $\exists w \in L(G)$ with $\ge 2$ distinct parse trees.</li>
+          <li><strong>Note:</strong> General CFG ambiguity is undecidable; this engine performs bounded string-based proof.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Right Area: Results & Visual Trees -->
+    <section class="panel output-panel">
+      <div id="status-banner" class="status-banner neutral">
+        Enter a grammar and string, then click <strong>Generate Parse Trees</strong>.
+      </div>
+
+      <div id="trees-container" class="trees-grid"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
