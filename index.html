@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CFG Parse Tree & Ambiguity Detector | BCS503</title>
+  <title>CFG Designer, Step-by-Step Parse Tree & Ambiguity Detector | BCS503</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header class="app-header">
     <div>
-      <h1>CFG Parse Tree & Ambiguity Detector</h1>
-      <p class="subtitle">Theory of Computation (BCS503) — Module 3 Interactive Visualizer</p>
+      <h1>CFG Designer & Step-by-Step Ambiguity Visualizer</h1>
+      <p class="subtitle">Theory of Computation (BCS503) — Module 3 Interactive Engine</p>
     </div>
-    <span class="badge-course">Earley Parsing Engine</span>
+    <span class="badge-course">Earley Parser + Step-by-Step Derivation</span>
   </header>
 
   <main class="container">
-    <!-- Left Sidebar: Controls -->
+    <!-- Left Sidebar: CFG Designer & Controls -->
     <section class="panel controls-panel">
       <div class="form-group">
         <label>1. Load Syllabus Presets</label>
@@ -28,36 +28,60 @@
         </div>
       </div>
 
+      <!-- Visual Rule Builder -->
       <div class="form-group">
-        <label for="grammar-input">2. Context-Free Grammar Rules (<code>A -> B C | d</code>)</label>
-        <textarea id="grammar-input" rows="7" spellcheck="false"></textarea>
-        <small class="hint">First rule's LHS is the Start Symbol. Separate tokens with spaces. Use <code>ε</code> or <code>eps</code> for epsilon.</small>
+        <label>2. Interactive CFG Rule Designer</label>
+        <div class="rule-builder-row">
+          <input type="text" id="new-lhs" placeholder="LHS (e.g. E)" maxlength="10" />
+          <span class="arrow-sym">→</span>
+          <input type="text" id="new-rhs" placeholder="RHS (e.g. E + E | id)" />
+          <button type="button" id="add-rule-btn" class="btn-add" title="Add or Append Production">+ Add</button>
+        </div>
+        <textarea id="grammar-input" rows="5" spellcheck="false"></textarea>
+        <small class="hint">First rule's LHS is Start Symbol ($S$). Separate tokens with spaces. Use <code>ε</code> for epsilon.</small>
+      </div>
+
+      <!-- Live Formal 4-Tuple Extractor -->
+      <div class="tuple-box" id="formal-tuple-box">
+        <div class="tuple-header">Formal Definition: $G = (V, \Sigma, R, S)$</div>
+        <div class="tuple-grid">
+          <div><strong>Variables ($V$):</strong> <span id="tuple-v">-</span></div>
+          <div><strong>Terminals ($\Sigma$):</strong> <span id="tuple-t">-</span></div>
+          <div><strong>Start ($S$):</strong> <span id="tuple-s">-</span></div>
+          <div><strong>Productions ($|R|$):</strong> <span id="tuple-r">-</span></div>
+        </div>
       </div>
 
       <div class="form-group">
-        <label for="string-input">3. Input String (space-separated tokens)</label>
+        <label for="string-input">3. Target Input String ($w$)</label>
         <input type="text" id="string-input" placeholder="e.g., id + id * id" />
       </div>
 
       <div class="action-buttons">
-        <button type="button" id="parse-btn" class="btn-primary">Generate Parse Trees</button>
-        <button type="button" id="hunt-btn" class="btn-secondary">Auto-Hunt Ambiguity</button>
-      </div>
-
-      <div class="theory-box">
-        <h3>Viva Quick-Reference</h3>
-        <ul>
-          <li><strong>Formal Grammar:</strong> $G = (V, \Sigma, R, S)$</li>
-          <li><strong>Ambiguity Condition:</strong> $\exists w \in L(G)$ with $\ge 2$ distinct parse trees.</li>
-          <li><strong>Note:</strong> General CFG ambiguity is undecidable; this engine performs bounded string-based proof.</li>
-        </ul>
+        <button type="button" id="parse-btn" class="btn-primary">Analyze & Build Step-by-Step Trees</button>
+        <button type="button" id="hunt-btn" class="btn-secondary">Auto-Hunt Ambiguous String</button>
       </div>
     </section>
 
-    <!-- Right Area: Results & Visual Trees -->
+    <!-- Right Area: Step-by-Step Derivation & Tree Visualizer -->
     <section class="panel output-panel">
       <div id="status-banner" class="status-banner neutral">
-        Enter a grammar and string, then click <strong>Generate Parse Trees</strong>.
+        Design or select a CFG and click <strong>Analyze & Build Step-by-Step Trees</strong>.
+      </div>
+
+      <!-- Global Playback Controls (Appears when valid trees exist) -->
+      <div id="playback-bar" class="playback-bar hidden">
+        <div class="playback-info">
+          <span class="step-badge" id="step-counter">Step 0 / 0</span>
+          <span class="step-desc" id="step-explanation">Click Next Step to watch the parse trees grow node-by-node.</span>
+        </div>
+        <div class="playback-controls">
+          <button type="button" id="btn-first" class="btn-step">⏮ Reset</button>
+          <button type="button" id="btn-prev" class="btn-step">◀ Prev Step</button>
+          <button type="button" id="btn-next" class="btn-step btn-step-primary">Next Step ▶</button>
+          <button type="button" id="btn-last" class="btn-step">Complete Tree ⏭</button>
+          <button type="button" id="btn-autoplay" class="btn-step btn-auto">▶ Auto-Play</button>
+        </div>
       </div>
 
       <div id="trees-container" class="trees-grid"></div>
@@ -66,4 +90,4 @@
 
   <script src="app.js"></script>
 </body>
-</html>
+</html> 
